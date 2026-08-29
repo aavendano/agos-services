@@ -109,7 +109,7 @@ else:
     CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-            "LOCATION": "bel-agents-cache",
+            "LOCATION": "hi-bel-cache",
         }
     }
 
@@ -181,6 +181,6 @@ SHOPIFY_SCOPES = os.getenv(
 )
 
 # MCP Gateway Configuration
-MCP_SERVER_NAME = os.getenv("MCP_SERVER_NAME", "bel-agents-shopify-mcp")
+MCP_SERVER_NAME = os.getenv("MCP_SERVER_NAME", "hi-bel-shopify-mcp")
 MCP_SERVER_VERSION = os.getenv("MCP_SERVER_VERSION", "0.1.0")
 MCP_AUTH_REQUIRED = os.getenv("MCP_AUTH_REQUIRED", "True").lower() in ("true", "1", "t", "yes")

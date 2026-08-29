@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand
 from apps.mcp_server.server import mcp_server_instance
 
 class Command(BaseCommand):
-    help = "Run the bel-agents Model Context Protocol (MCP) server"
+    help = "Run the hi-bel Model Context Protocol (MCP) server"
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         transport = options["transport"]
-        self.stdout.write(self.style.SUCCESS(f"Starting bel-agents MCP Server via {transport}..."))
+        self.stdout.write(self.style.SUCCESS(f"Starting hi-bel MCP Server via {transport}..."))
 
         if transport == "stdio":
             asyncio.run(mcp_server_instance.run_stdio_async())

@@ -1,6 +1,6 @@
-# Deployment Guide: `bel-agents`
+# Deployment Guide: `hi-bel`
 
-This guide covers deploying `bel-agents` to **Railway**, **Render**, and **VPS / Docker**.
+This guide covers deploying `hi-bel` to **Railway**, **Render**, and **VPS / Docker**.
 
 ---
 
@@ -48,7 +48,7 @@ Run the stack using Docker Compose:
 docker compose up -d --build
 ```
 
-### Nginx Reverse Proxy Configuration (`/etc/nginx/sites-available/bel-agents`)
+### Nginx Reverse Proxy Configuration (`/etc/nginx/sites-available/hi-bel`)
 ```nginx
 server {
     listen 80;

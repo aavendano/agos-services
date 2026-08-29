@@ -1,8 +1,8 @@
-# Architecture Blueprint: `bel-agents` Shopify MCP Gateway
+# Architecture Blueprint: `hi-bel` Shopify MCP Gateway
 
 ## 1. Overview & System Isolation Policy
 
-`bel-agents` is an enterprise-grade AI integration gateway built on **Django 5**, **Django REST Framework**, and the **Python MCP SDK (`mcp`)**. It exposes governed Shopify e-commerce capabilities to external AI agents and IDEs (such as Claude Desktop, Cursor, and autonomous agent platforms).
+`hi-bel` is an enterprise-grade AI integration gateway built on **Django 5**, **Django REST Framework**, and the **Python MCP SDK (`mcp`)**. It exposes governed Shopify e-commerce capabilities to external AI agents and IDEs (such as Claude Desktop, Cursor, and autonomous agent platforms).
 
 ### Strict Gateway Isolation Principle
 - **No Direct REST Bypass:** External consumer applications and AI agents are strictly isolated from internal backend APIs. External clients **must** communicate exclusively via the **Model Context Protocol (MCP)** over Server-Sent Events (`/mcp/sse` and `/mcp/messages/`).
@@ -19,7 +19,7 @@
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
-│             bel-agents ASGI Gateway (Uvicorn)               │
+│               hi-bel ASGI Gateway (Uvicorn)                 │
 │                                                             │
 │  ┌───────────────────────────────────────────────────────┐  │
 │  │     Starlette SSE Transport & MCP Protocol Engine     │  │

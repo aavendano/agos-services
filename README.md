@@ -1,11 +1,11 @@
-# bel-agents: Governed Shopify MCP Integration Gateway
+# hi-bel: Governed Shopify MCP Integration Gateway
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Django 5.1](https://img.shields.io/badge/django-5.1-green.svg)](https://www.djangoproject.com/)
 [![MCP 2.x](https://img.shields.io/badge/MCP-Protocol-purple.svg)](https://modelcontextprotocol.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-`bel-agents` is a production-ready **Model Context Protocol (MCP)** integration gateway for Shopify e-commerce. It provides external AI agents (Claude Desktop, Cursor, autonomous agents) secure, governed, and rate-limited access to Shopify stores over Server-Sent Events (SSE) and stdio transports.
+`hi-bel` is a production-ready **Model Context Protocol (MCP)** integration gateway for Shopify e-commerce. It provides external AI agents (Claude Desktop, Cursor, autonomous agents) secure, governed, and rate-limited access to Shopify stores over Server-Sent Events (SSE) and stdio transports.
 
 ---
 

@@ -16,14 +16,14 @@ logger = logging.getLogger(__name__)
 
 def create_mcp_server() -> MCPServer:
     """
-    Instantiates and configures the bel-agents Shopify MCP Server.
+    Instantiates and configures the hi-bel Shopify MCP Server.
     Registers all e-commerce tools with schemas and privilege enforcement.
     """
     server = MCPServer(
-        name="bel-agents-shopify-mcp",
+        name="hi-bel-shopify-mcp",
         version="0.1.0",
         instructions=(
-            "bel-agents is a secure e-commerce gateway for Shopify. "
+            "hi-bel is a secure e-commerce gateway for Shopify. "
             "All operations require active client authentication and granted tool privileges."
         ),
     )

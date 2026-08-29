@@ -5,7 +5,7 @@ class MCPInfoView(View):
     """Informational endpoint explaining that external access is exclusively via MCP protocol."""
     def get(self, request):
         return JsonResponse({
-            "service": "bel-agents MCP Gateway",
+            "service": "hi-bel MCP Gateway",
             "protocol": "Model Context Protocol (MCP) 2024-11-05 / 2.x",
             "isolation_policy": "Strict MCP only - No direct external REST bypass",
             "transport_endpoints": {

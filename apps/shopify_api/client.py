@@ -67,7 +67,7 @@ class ShopifyGraphQLClient:
         headers = {
             "Content-Type": "application/json",
             "X-Shopify-Access-Token": self.access_token,
-            "User-Agent": "bel-agents-mcp-gateway/0.1.0",
+            "User-Agent": "hi-bel-mcp-gateway/0.1.0",
         }
         payload = {"query": query, "variables": variables or {}}
 

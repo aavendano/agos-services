@@ -47,7 +47,7 @@ class ShopifyCallbackView(View):
             
             return JsonResponse({
                 "status": "success",
-                "message": f"Shopify store {shop} successfully connected to bel-agents MCP gateway.",
+                "message": f"Shopify store {shop} successfully connected to hi-bel MCP gateway.",
                 "scopes": scopes,
             })
         except Exception as exc:

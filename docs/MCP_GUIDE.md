@@ -1,6 +1,6 @@
 # Client Configuration Guide: Model Context Protocol (MCP)
 
-This guide describes how to connect external AI tools and IDEs to the `bel-agents` Shopify MCP Gateway.
+This guide describes how to connect external AI tools and IDEs to the `hi-bel` Shopify MCP Gateway.
 
 ## 1. Authentication & Tokens
 
@@ -27,7 +27,7 @@ Add the following entry to your Claude Desktop configuration file:
         "stdio"
       ],
       "env": {
-        "DATABASE_URL": "postgres://postgres:postgres@localhost:5432/bel_agents",
+        "DATABASE_URL": "postgres://postgres:postgres@localhost:5432/hi_bel",
         "SHOPIFY_API_KEY": "shpat_your_token_here",
         "SHOPIFY_STORE_DOMAIN": "your-store.myshopify.com"
       }
@@ -44,7 +44,7 @@ In Cursor:
 1. Open **Settings > Cursor Settings > Features > MCP**.
 2. Click **+ Add New MCP Server**.
 3. Choose type **SSE**:
-   - **Name:** `bel-agents-shopify`
+   - **Name:** `hi-bel-shopify`
    - **URL:** `http://localhost:8000/mcp/sse?token=<YOUR_MCP_CLIENT_UUID_TOKEN>` (or your production URL with HTTPS).
 4. Save and verify the tools appear in the MCP list.
 
