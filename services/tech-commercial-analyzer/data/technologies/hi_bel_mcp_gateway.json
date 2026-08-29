@@ -1,0 +1,57 @@
+{
+  "id": "hi-bel-mcp-gateway",
+  "name": "hi-bel Governed Shopify MCP Integration Gateway",
+  "category": "E-Commerce Infrastructure & Agent Tooling",
+  "repository_url": "https://github.com/aavendano/agos-services.git",
+  "description": "High-security Model Context Protocol (MCP) server providing governed, rate-limited, and audited Shopify GraphQL administration for autonomous AI agents (Claude Desktop, Cursor, Antigravity).",
+  "key_differentiators": [
+    "Strict MCP-only SSE isolation with zero external REST bypass vulnerability",
+    "Granular PrivilegeGate authorizing tool invocations per-client UUID token",
+    "Native leaky-bucket Shopify GraphQL rate limiting and auto-retries",
+    "Full enterprise audit logging and compliance for autonomous agent mutations"
+  ],
+  "readiness": {
+    "trl": 8,
+    "crl": 7,
+    "operational_evidence": "Production-ready Django 5.1/DRF/MCP 2.x implementation with 100% pytest pass rate (19 unit/integration tests) verified in AADA-36 & AADA-38.",
+    "tech_debt_score": 10.0
+  },
+  "market": {
+    "tam_usd_m": 2400.0,
+    "sam_usd_m": 420.0,
+    "som_usd_m": 48.0,
+    "cagr_pct": 28.0,
+    "target_segments": [
+      "Shopify Plus Merchants",
+      "AI Agent Integrators",
+      "E-Commerce Automation Agencies"
+    ],
+    "competitive_density": "moderate"
+  },
+  "unit_economics": {
+    "pricing_type": "usage_based_api",
+    "avg_acv_usd": 14400.0,
+    "gross_margin_pct": 82.0,
+    "cac_usd": 3200.0,
+    "monthly_churn_pct": 1.2,
+    "target_year1_customers": 25,
+    "customer_growth_rate_yoy_pct": 160.0
+  },
+  "moat": {
+    "proprietary_ip_score": 80.0,
+    "switching_cost_score": 78.0,
+    "network_effects_score": 60.0,
+    "technical_complexity_score": 75.0
+  },
+  "gtm": {
+    "sales_cycle_days": 20,
+    "onboarding_effort_days": 2,
+    "market_awareness_score": 85.0,
+    "regulatory_friction_score": 10.0
+  },
+  "created_at": "2026-08-29T00:00:00Z",
+  "metadata": {
+    "origin_issue": "AADA-36/38",
+    "primary_technology": "Python, Django, MCP SDK 2.x, PostgreSQL, Redis, httpx"
+  }
+}

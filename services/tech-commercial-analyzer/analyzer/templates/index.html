@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AA Digital Business — Tech Commercial Potential Analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+    <!-- Navigation Bar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/30 text-lg">
+                    AG
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-white">AA Digital Business</h1>
+                    <p class="text-xs text-slate-400">Technology Commercial Potential Analyzer</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                    ● System Active (TRL/CRL Engine v1.0)
+                </span>
+                <button onclick="window.print()" class="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+                    Export Executive Memo
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-6 py-8 space-y-8">
+        <!-- KPI Stats Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-6" id="kpi-grid">
+            <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl">
+                <div class="text-slate-400 text-xs font-medium uppercase tracking-wider">Cataloged Technologies</div>
+                <div class="mt-2 text-3xl font-extrabold text-white" id="stat-total-techs">{{ reports|length }}</div>
+                <div class="mt-1 text-xs text-slate-500">Across 4 core product categories</div>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl">
+                <div class="text-slate-400 text-xs font-medium uppercase tracking-wider">Portfolio Avg Commercial Score</div>
+                <div class="mt-2 text-3xl font-extrabold text-cyan-400" id="stat-avg-score">
+                    {% set total_score = 0 %}
+                    {% for r in reports %}{% set total_score = total_score + r.composite_score %}{% endfor %}
+                    {{ (total_score / reports|length)|round(1) if reports|length > 0 else 0 }} / 100
+                </div>
+                <div class="mt-1 text-xs text-emerald-400">Strong Buy / Scale tier</div>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl">
+                <div class="text-slate-400 text-xs font-medium uppercase tracking-wider">Aggregate 5-Yr NPV</div>
+                <div class="mt-2 text-3xl font-extrabold text-emerald-400" id="stat-total-npv">
+                    {% set total_npv = 0 %}
+                    {% for r in reports %}{% set total_npv = total_npv + r.financial_summary.five_year_npv_usd %}{% endfor %}
+                    ${{ "{:,.0f}".format(total_npv) }}
+                </div>
+                <div class="mt-1 text-xs text-slate-500">Discounted at 12% WACC</div>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl">
+                <div class="text-slate-400 text-xs font-medium uppercase tracking-wider">Target Obtainable Market (SOM)</div>
+                <div class="mt-2 text-3xl font-extrabold text-indigo-400" id="stat-total-som">
+                    {% set total_som = 0 %}
+                    {% for a in assets %}{% set total_som = total_som + a.market.som_usd_m %}{% endfor %}
+                    ${{ "{:,.0f}".format(total_som) }}M
+                </div>
+                <div class="mt-1 text-xs text-slate-500">Year 3-5 serviceable target</div>
+            </div>
+        </section>
+
+        <!-- Comparative Ranking Matrix -->
+        <section class="bg-slate-900/60 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+            <div class="px-6 py-5 border-b border-slate-800 flex items-center justify-between">
+                <div>
+                    <h2 class="font-bold text-lg text-white">🏆 Technology Commercial Viability Ranking</h2>
+                    <p class="text-xs text-slate-400">Multi-criteria evaluation combining TAM/SAM, Moat, Unit Economics, TRL/CRL, and GTM Friction</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="bg-slate-950/80 text-xs uppercase text-slate-400 border-b border-slate-800">
+                        <tr>
+                            <th class="px-6 py-4">Rank</th>
+                            <th class="px-6 py-4">Technology Asset</th>
+                            <th class="px-6 py-4">Category</th>
+                            <th class="px-6 py-4 text-center">Score</th>
+                            <th class="px-6 py-4 text-center">Recommendation</th>
+                            <th class="px-6 py-4 text-right">LTV:CAC</th>
+                            <th class="px-6 py-4 text-right">Payback</th>
+                            <th class="px-6 py-4 text-right">5-Yr NPV</th>
+                            <th class="px-6 py-4 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60" id="ranking-tbody">
+                        {% for r in reports %}
+                        <tr class="hover:bg-slate-800/40 transition cursor-pointer" onclick="selectTech('{{ r.tech_id }}')">
+                            <td class="px-6 py-4 font-bold text-slate-400">#{{ loop.index }}</td>
+                            <td class="px-6 py-4 font-semibold text-white">
+                                {{ r.tech_name }}
+                                <div class="text-xs font-normal text-slate-500">{{ r.tech_id }}</div>
+                            </td>
+                            <td class="px-6 py-4 text-xs text-slate-400">{{ r.category }}</td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="font-extrabold text-cyan-400 text-base">{{ r.composite_score }}</span>
+                                <span class="text-xs text-slate-500">/100</span>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {% if r.recommendation == "STRONG_BUY_SCALE" %}
+                                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">STRONG BUY</span>
+                                {% elif r.recommendation == "BUY_INVEST" %}
+                                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-green-500/20 text-green-300 border border-green-500/30">BUY / INVEST</span>
+                                {% elif r.recommendation == "INCUBATE_VALIDATE" %}
+                                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">INCUBATE</span>
+                                {% else %}
+                                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-500/20 text-slate-300 border border-slate-500/30">{{ r.recommendation }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-right font-medium text-emerald-400">{{ r.financial_summary.ltv_to_cac_ratio }}x</td>
+                            <td class="px-6 py-4 text-right font-medium text-slate-300">{{ r.financial_summary.payback_period_months }} mo</td>
+                            <td class="px-6 py-4 text-right font-bold text-white">${{ "{:,.0f}".format(r.financial_summary.five_year_npv_usd) }}</td>
+                            <td class="px-6 py-4 text-center">
+                                <button class="px-3 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition">Inspect</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Deep Dive Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8" id="deep-dive-section">
+            <!-- Left 2 Cols: Details, Radar & Financial Charts -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Tech Header Card -->
+                <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="text-xs uppercase tracking-wider text-indigo-400 font-semibold" id="detail-category">{{ reports[0].category }}</span>
+                            <h2 class="text-2xl font-bold text-white mt-1" id="detail-name">{{ reports[0].tech_name }}</h2>
+                            <p class="text-xs text-slate-400 mt-2 max-w-2xl" id="detail-desc">{{ assets[0].description }}</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-slate-400 uppercase font-medium">Composite Score</div>
+                            <div class="text-4xl font-extrabold text-cyan-400" id="detail-score">{{ reports[0].composite_score }}</div>
+                            <div class="text-xs text-emerald-400 font-bold mt-1" id="detail-rec">{{ reports[0].recommendation }}</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-slate-800/80">
+                        <div>
+                            <div class="text-xs text-slate-500">TRL / CRL</div>
+                            <div class="text-base font-bold text-white" id="detail-readiness">TRL {{ assets[0].readiness.trl }} / CRL {{ assets[0].readiness.crl }}</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500">SAM / Target SOM</div>
+                            <div class="text-base font-bold text-yellow-400" id="detail-sam">${{ assets[0].market.sam_usd_m }}M / ${{ assets[0].market.som_usd_m }}M</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500">Avg ACV</div>
+                            <div class="text-base font-bold text-emerald-400" id="detail-acv">${{ "{:,.0f}".format(assets[0].unit_economics.avg_acv_usd) }}</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500">LTV:CAC Ratio</div>
+                            <div class="text-base font-bold text-cyan-400" id="detail-ltv-cac">{{ reports[0].financial_summary.ltv_to_cac_ratio }}x</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Radar Chart: Multi-dimension Score -->
+                    <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl">
+                        <h3 class="font-bold text-sm text-white mb-4">🎯 Multi-Dimensional Capability Profile</h3>
+                        <div class="h-64">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Financial Projections Bar Chart -->
+                    <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl">
+                        <h3 class="font-bold text-sm text-white mb-4">📈 5-Year Revenue & Net Profit Projection</h3>
+                        <div class="h-64">
+                            <canvas id="financialChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strengths & Milestones -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl">
+                        <h3 class="font-bold text-sm text-emerald-400 mb-3">✅ Strategic Strengths & Moat</h3>
+                        <ul class="text-xs text-slate-300 space-y-2" id="detail-strengths">
+                            {% for s in reports[0].strengths %}
+                            <li class="flex items-start space-x-2"><span class="text-emerald-400">●</span><span>{{ s }}</span></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl">
+                        <h3 class="font-bold text-sm text-indigo-400 mb-3">🚀 Commercial Execution Roadmap</h3>
+                        <ol class="text-xs text-slate-300 space-y-2 list-decimal list-inside" id="detail-milestones">
+                            {% for m in reports[0].strategic_milestones %}
+                            <li>{{ m }}</li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Interactive What-If Sensitivity Simulator -->
+            <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl space-y-6">
+                <div>
+                    <h3 class="font-bold text-base text-white">⚡ Interactive Sensitivity Simulator</h3>
+                    <p class="text-xs text-slate-400 mt-1">Adjust unit economics parameters in real-time to simulate NPV and payback impact.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs text-slate-300 mb-1">
+                            <span>Annual Contract Value (ACV)</span>
+                            <span class="font-bold text-emerald-400" id="slider-acv-val">${{ "{:,.0f}".format(assets[0].unit_economics.avg_acv_usd) }}</span>
+                        </div>
+                        <input type="range" id="slider-acv" min="5000" max="150000" step="1000" value="{{ assets[0].unit_economics.avg_acv_usd }}" class="w-full accent-indigo-500">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs text-slate-300 mb-1">
+                            <span>Customer Acquisition Cost (CAC)</span>
+                            <span class="font-bold text-yellow-400" id="slider-cac-val">${{ "{:,.0f}".format(assets[0].unit_economics.cac_usd) }}</span>
+                        </div>
+                        <input type="range" id="slider-cac" min="1000" max="30000" step="500" value="{{ assets[0].unit_economics.cac_usd }}" class="w-full accent-indigo-500">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs text-slate-300 mb-1">
+                            <span>Monthly Churn Rate (%)</span>
+                            <span class="font-bold text-red-400" id="slider-churn-val">{{ assets[0].unit_economics.monthly_churn_pct }}%</span>
+                        </div>
+                        <input type="range" id="slider-churn" min="0.2" max="5.0" step="0.1" value="{{ assets[0].unit_economics.monthly_churn_pct }}" class="w-full accent-indigo-500">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs text-slate-300 mb-1">
+                            <span>YoY Customer Growth Rate (%)</span>
+                            <span class="font-bold text-cyan-400" id="slider-growth-val">{{ assets[0].unit_economics.customer_growth_rate_yoy_pct }}%</span>
+                        </div>
+                        <input type="range" id="slider-growth" min="20" max="300" step="5" value="{{ assets[0].unit_economics.customer_growth_rate_yoy_pct }}" class="w-full accent-indigo-500">
+                    </div>
+                </div>
+
+                <!-- Simulation Output Metrics -->
+                <div class="pt-4 border-t border-slate-800 space-y-3">
+                    <div class="flex justify-between items-center bg-slate-950/60 p-3 rounded-xl">
+                        <span class="text-xs text-slate-400">Simulated 5-Yr NPV</span>
+                        <span class="font-bold text-emerald-400 text-base" id="sim-npv">${{ "{:,.0f}".format(reports[0].financial_summary.five_year_npv_usd) }}</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-950/60 p-3 rounded-xl">
+                        <span class="text-xs text-slate-400">Simulated LTV:CAC</span>
+                        <span class="font-bold text-cyan-400 text-base" id="sim-ltv-cac">{{ reports[0].financial_summary.ltv_to_cac_ratio }}x</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-950/60 p-3 rounded-xl">
+                        <span class="text-xs text-slate-400">Simulated Payback</span>
+                        <span class="font-bold text-yellow-400 text-base" id="sim-payback">{{ reports[0].financial_summary.payback_period_months }} mo</span>
+                    </div>
+                </div>
+
+                <!-- Monte Carlo Confidence Box -->
+                <div class="bg-indigo-950/30 border border-indigo-500/20 p-4 rounded-xl space-y-2">
+                    <div class="text-xs font-bold text-indigo-300">🎲 Monte Carlo Confidence (1,000 runs)</div>
+                    <div class="text-xs text-slate-300">
+                        P50 Median Year 3 Revenue: <span class="font-bold text-white" id="mc-p50-rev">${{ "{:,.0f}".format(reports[0].monte_carlo.p50_year3_revenue_usd) if reports[0].monte_carlo else "N/A" }}</span>
+                    </div>
+                    <div class="text-xs text-slate-300">
+                        24-Month Profitability Chance: <span class="font-bold text-emerald-400" id="mc-prob">{{ reports[0].monte_carlo.prob_profitable_month24_pct if reports[0].monte_carlo else 95 }}%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const rawReports = {{ reports | tojson }};
+        const rawAssets = {{ assets | tojson }};
+        let currentTechId = rawReports[0]?.tech_id || "";
+        let radarChartInstance = null;
+        let financialChartInstance = null;
+
+        function getReport(id) {
+            return rawReports.find(r => r.tech_id === id);
+        }
+        function getAsset(id) {
+            return rawAssets.find(a => a.id === id);
+        }
+
+        function initCharts(report) {
+            const ctxRadar = document.getElementById('radarChart').getContext('2d');
+            const d = report.dimension_scores;
+            radarChartInstance = new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: ['Market Attractiveness', 'Tech Maturity', 'Defensibility Moat', 'Unit Economics', 'GTM Velocity', 'Risk Viability'],
+                    datasets: [{
+                        label: report.tech_name,
+                        data: [d.market_attractiveness, d.technology_maturity, d.defensibility_moat, d.financial_unit_economics, d.gtm_velocity, d.risk_adjusted_viability],
+                        backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                        borderColor: 'rgba(99, 102, 241, 1)',
+                        pointBackgroundColor: 'rgba(34, 211, 238, 1)',
+                        pointBorderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: { color: '#94a3b8', font: { size: 10 } },
+                            ticks: { display: false, min: 0, max: 100 }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            const ctxFin = document.getElementById('financialChart').getContext('2d');
+            const years = report.financial_summary.projections.map(p => 'Y' + p.year);
+            const revenues = report.financial_summary.projections.map(p => p.revenue_usd);
+            const profits = report.financial_summary.projections.map(p => p.net_operating_profit_usd);
+
+            financialChartInstance = new Chart(ctxFin, {
+                type: 'bar',
+                data: {
+                    labels: years,
+                    datasets: [
+                        { label: 'Revenue ($)', data: revenues, backgroundColor: 'rgba(99, 102, 241, 0.7)', borderRadius: 4 },
+                        { label: 'Net Profit ($)', data: profits, backgroundColor: 'rgba(16, 185, 129, 0.7)', borderRadius: 4 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8' } },
+                        y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#94a3b8' } }
+                    },
+                    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 10 } } } }
+                }
+            });
+        }
+
+        function updateCharts(report) {
+            if (!radarChartInstance || !financialChartInstance) return;
+            const d = report.dimension_scores;
+            radarChartInstance.data.datasets[0].label = report.tech_name;
+            radarChartInstance.data.datasets[0].data = [
+                d.market_attractiveness, d.technology_maturity, d.defensibility_moat,
+                d.financial_unit_economics, d.gtm_velocity, d.risk_adjusted_viability
+            ];
+            radarChartInstance.update();
+
+            financialChartInstance.data.datasets[0].data = report.financial_summary.projections.map(p => p.revenue_usd);
+            financialChartInstance.data.datasets[1].data = report.financial_summary.projections.map(p => p.net_operating_profit_usd);
+            financialChartInstance.update();
+        }
+
+        function selectTech(id) {
+            currentTechId = id;
+            const report = getReport(id);
+            const asset = getAsset(id);
+            if (!report || !asset) return;
+
+            document.getElementById('detail-name').innerText = report.tech_name;
+            document.getElementById('detail-category').innerText = report.category;
+            document.getElementById('detail-desc').innerText = asset.description;
+            document.getElementById('detail-score').innerText = report.composite_score;
+            document.getElementById('detail-rec').innerText = report.recommendation;
+            document.getElementById('detail-readiness').innerText = `TRL ${asset.readiness.trl} / CRL ${asset.readiness.crl}`;
+            document.getElementById('detail-sam').innerText = `$${asset.market.sam_usd_m}M / $${asset.market.som_usd_m}M`;
+            document.getElementById('detail-acv').innerText = `$${Number(asset.unit_economics.avg_acv_usd).toLocaleString()}`;
+            document.getElementById('detail-ltv-cac').innerText = `${report.financial_summary.ltv_to_cac_ratio}x`;
+
+            const sContainer = document.getElementById('detail-strengths');
+            sContainer.innerHTML = report.strengths.map(s => `<li class="flex items-start space-x-2"><span class="text-emerald-400">●</span><span>${s}</span></li>`).join('');
+
+            const mContainer = document.getElementById('detail-milestones');
+            mContainer.innerHTML = report.strategic_milestones.map(m => `<li>${m}</li>`).join('');
+
+            // Update sliders
+            document.getElementById('slider-acv').value = asset.unit_economics.avg_acv_usd;
+            document.getElementById('slider-acv-val').innerText = `$${Number(asset.unit_economics.avg_acv_usd).toLocaleString()}`;
+            document.getElementById('slider-cac').value = asset.unit_economics.cac_usd;
+            document.getElementById('slider-cac-val').innerText = `$${Number(asset.unit_economics.cac_usd).toLocaleString()}`;
+            document.getElementById('slider-churn').value = asset.unit_economics.monthly_churn_pct;
+            document.getElementById('slider-churn-val').innerText = `${asset.unit_economics.monthly_churn_pct}%`;
+            document.getElementById('slider-growth').value = asset.unit_economics.customer_growth_rate_yoy_pct;
+            document.getElementById('slider-growth-val').innerText = `${asset.unit_economics.customer_growth_rate_yoy_pct}%`;
+
+            document.getElementById('sim-npv').innerText = `$${Number(report.financial_summary.five_year_npv_usd).toLocaleString()}`;
+            document.getElementById('sim-ltv-cac').innerText = `${report.financial_summary.ltv_to_cac_ratio}x`;
+            document.getElementById('sim-payback').innerText = `${report.financial_summary.payback_period_months} mo`;
+
+            if (report.monte_carlo) {
+                document.getElementById('mc-p50-rev').innerText = `$${Number(report.monte_carlo.p50_year3_revenue_usd).toLocaleString()}`;
+                document.getElementById('mc-prob').innerText = `${report.monte_carlo.prob_profitable_month24_pct}%`;
+            }
+
+            updateCharts(report);
+        }
+
+        // Live Slider Interactions
+        ['slider-acv', 'slider-cac', 'slider-churn', 'slider-growth'].forEach(id => {
+            document.getElementById(id).addEventListener('input', async (e) => {
+                const asset = getAsset(currentTechId);
+                if (!asset) return;
+
+                const acv = parseFloat(document.getElementById('slider-acv').value);
+                const cac = parseFloat(document.getElementById('slider-cac').value);
+                const churn = parseFloat(document.getElementById('slider-churn').value);
+                const growth = parseFloat(document.getElementById('slider-growth').value);
+
+                document.getElementById('slider-acv-val').innerText = `$${acv.toLocaleString()}`;
+                document.getElementById('slider-cac-val').innerText = `$${cac.toLocaleString()}`;
+                document.getElementById('slider-churn-val').innerText = `${churn}%`;
+                document.getElementById('slider-growth-val').innerText = `${growth}%`;
+
+                // Clone and mutate asset
+                const modifiedAsset = JSON.parse(JSON.stringify(asset));
+                modifiedAsset.unit_economics.avg_acv_usd = acv;
+                modifiedAsset.unit_economics.cac_usd = cac;
+                modifiedAsset.unit_economics.monthly_churn_pct = churn;
+                modifiedAsset.unit_economics.customer_growth_rate_yoy_pct = growth;
+
+                try {
+                    const res = await fetch('/api/custom-evaluate?simulations=false', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(modifiedAsset)
+                    });
+                    if (res.ok) {
+                        const updatedReport = await res.json();
+                        document.getElementById('sim-npv').innerText = `$${Math.round(updatedReport.financial_summary.five_year_npv_usd).toLocaleString()}`;
+                        document.getElementById('sim-ltv-cac').innerText = `${updatedReport.financial_summary.ltv_to_cac_ratio}x`;
+                        document.getElementById('sim-payback').innerText = `${updatedReport.financial_summary.payback_period_months} mo`;
+                        document.getElementById('detail-score').innerText = updatedReport.composite_score;
+                        updateCharts(updatedReport);
+                    }
+                } catch (err) {
+                    console.error("Simulation error:", err);
+                }
+            });
+        });
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            if (rawReports.length > 0) {
+                initCharts(rawReports[0]);
+            }
+        });
+    </script>
+</body>
+</html>

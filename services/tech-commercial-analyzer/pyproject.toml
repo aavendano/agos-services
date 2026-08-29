@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tech-commercial-analyzer"
+version = "0.1.0"
+description = "Enterprise commercialization & financial valuation engine for proprietary technologies"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.30.0",
+    "pydantic>=2.7.0",
+    "rich>=13.0.0",
+    "jinja2>=3.1.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-ra -q"

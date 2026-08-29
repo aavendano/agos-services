@@ -5,7 +5,24 @@
 [![MCP 2.x](https://img.shields.io/badge/MCP-Protocol-purple.svg)](https://modelcontextprotocol.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-`hi-bel` is a production-ready **Model Context Protocol (MCP)** integration gateway for Shopify e-commerce. It provides external AI agents (Claude Desktop, Cursor, autonomous agents) secure, governed, and rate-limited access to Shopify stores over Server-Sent Events (SSE) and stdio transports.
+`agos-services` is a **monorepo** of governed internal services for AA Digital Business. The primary production service is **`hi-bel`**, a Model Context Protocol (MCP) integration gateway for Shopify e-commerce. Additional services live under `services/` and share the root Python virtual environment.
+
+---
+
+## Monorepo Layout
+
+| Path | Service | Description |
+|------|---------|-------------|
+| `config/`, `apps/`, `tests/` | **hi-bel** | Governed Shopify MCP gateway (Django + Starlette SSE) |
+| `services/tech-commercial-analyzer/` | **tech-eval** | Commercial potential scoring, DCF engine, and executive dashboard |
+
+Each service owns its tests and documentation. Root `pytest` runs **hi-bel only**; run service tests from that service directory (see [Testing](#testing)).
+
+---
+
+## hi-bel Overview
+
+`hi-bel` provides external AI agents (Claude Desktop, Cursor, autonomous agents) secure, governed, and rate-limited access to Shopify stores over Server-Sent Events (SSE) and stdio transports.
 
 ---
 
@@ -30,38 +47,31 @@ agos-services/
 │   └── wsgi.py
 ├── apps/
 │   ├── channels/              # MCP Client provisioning & ToolPermission ORM
-│   │   ├── models.py          # MCPClient, ToolPermission
-│   │   ├── serializers.py     # DRF serializers for programmatic client provisioning
-│   │   └── views.py           # REST API endpoints for client administration
 │   ├── mcp_server/            # Model Context Protocol Engine & Handlers
-│   │   ├── middleware.py      # Token validation & ToolPermission enforcement
-│   │   ├── server.py          # MCPServer instance & tool registrations
-│   │   ├── tools.py           # Shopify MCP tools implementations
-│   │   └── transport.py       # Starlette SSE & message handling
 │   ├── shopify_api/           # Shopify GraphQL Admin API Adapter
-│   │   ├── client.py          # Async httpx client with rate limit & cost management
-│   │   ├── exceptions.py      # Domain-specific Shopify API errors
-│   │   ├── queries.py         # Modular GraphQL query & mutation documents
-│   │   └── types.py           # Pydantic response schemas
 │   └── auth/                  # Shopify OAuth & Django OAuth Toolkit integration
-│       ├── models.py          # ShopifyStoreSession
-│       ├── services.py        # HMAC signature verification & OAuth handshake
-│       └── views.py           # OAuth views & Webhook receivers
+├── services/
+│   └── tech-commercial-analyzer/   # Commercial valuation engine (CLI + FastAPI)
+│       ├── analyzer/          # Scoring engine, financials, Monte Carlo, API
+│       ├── bin/tech-eval        # CLI entrypoint
+│       ├── data/technologies/   # Pre-loaded technology manifests
+│       ├── tests/               # Service test suite (12 tests)
+│       └── README.md
 ├── docs/
 │   ├── ARCHITECTURE.md        # Technical architecture blueprint (STD-DOC-001)
 │   ├── MCP_GUIDE.md           # Client setup guide for Cursor, Claude, Antigravity
 │   └── DEPLOYMENT.md          # Deployment guide for Railway, Render, VPS
-├── tests/
+├── tests/                     # hi-bel test suite (19 tests)
 │   ├── conftest.py            # Pytest fixtures and mock DB setup
-│   ├── test_auth.py           # Shopify OAuth & HMAC verification tests
-│   ├── test_channels.py       # MCPClient & ToolPermission ORM tests
-│   ├── test_mcp_server.py     # PrivilegeGate & tool authorization tests
-│   └── test_shopify_api.py    # Shopify GraphQL client mock tests
+│   ├── test_auth.py
+│   ├── test_channels.py
+│   ├── test_mcp_server.py
+│   └── test_shopify_api.py
 ├── .env.example
 ├── Dockerfile
 ├── docker-compose.yml
 ├── manage.py
-├── pyproject.toml
+├── pyproject.toml             # Root pytest config (hi-bel testpaths)
 └── requirements.txt
 ```
 
@@ -102,9 +112,27 @@ python manage.py runserver
 Visit `http://localhost:8000/admin/` to create an `MCPClient` and grant `ToolPermission` records.
 
 ### 6. Run Test Suite
+
+**hi-bel** (from repo root — default `testpaths` in `pyproject.toml`):
+
 ```bash
+pytest tests/    # or simply: pytest
+```
+
+**tech-commercial-analyzer** (from service directory):
+
+```bash
+cd services/tech-commercial-analyzer
 pytest
 ```
+
+**Run both suites:**
+
+```bash
+pytest tests/ && (cd services/tech-commercial-analyzer && pytest)
+```
+
+See [services/tech-commercial-analyzer/README.md](services/tech-commercial-analyzer/README.md) for CLI and dashboard usage.
 
 ---
 

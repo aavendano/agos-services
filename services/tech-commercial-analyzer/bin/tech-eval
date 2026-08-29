@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+import sys
+import os
+
+real_file = os.path.realpath(__file__)
+service_dir = os.path.dirname(os.path.dirname(real_file))
+if service_dir not in sys.path:
+    sys.path.insert(0, service_dir)
+
+from analyzer.cli import main
+
+if __name__ == "__main__":
+    main()

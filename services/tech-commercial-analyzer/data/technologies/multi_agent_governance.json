@@ -1,0 +1,57 @@
+{
+  "id": "multi-agent-governance",
+  "name": "Autonomous Multi-Agent Governance & Orchestration Platform",
+  "category": "Enterprise AI Operations (AIOps)",
+  "repository_url": "https://github.com/aavendano/agos-services.git",
+  "description": "Enterprise-grade orchestration framework enforcing deterministic execution policies, automated budget guards, supervisor review gates, and traceable work products across swarms of AI coding agents.",
+  "key_differentiators": [
+    "Deterministic execution policies preventing runaway spend and looping agent hallucinations",
+    "Continuous verification loops with automated reviewer/governance sign-off gates",
+    "Real-time token cost, budget tracking, and multi-model routing (Gemini, Claude, GPT, Local)",
+    "Audited work products, documents, and git branch synchronizations"
+  ],
+  "readiness": {
+    "trl": 8,
+    "crl": 7,
+    "operational_evidence": "Powering daily multi-agent enterprise software delivery at AA Digital Business across 40+ completed operational issues.",
+    "tech_debt_score": 12.0
+  },
+  "market": {
+    "tam_usd_m": 8500.0,
+    "sam_usd_m": 950.0,
+    "som_usd_m": 95.0,
+    "cagr_pct": 36.0,
+    "target_segments": [
+      "Enterprise Engineering Teams",
+      "Regulated FinTech/HealthTech AI Labs",
+      "Autonomous Dev Agencies"
+    ],
+    "competitive_density": "moderate"
+  },
+  "unit_economics": {
+    "pricing_type": "enterprise_license",
+    "avg_acv_usd": 65000.0,
+    "gross_margin_pct": 90.0,
+    "cac_usd": 12000.0,
+    "monthly_churn_pct": 0.6,
+    "target_year1_customers": 8,
+    "customer_growth_rate_yoy_pct": 140.0
+  },
+  "moat": {
+    "proprietary_ip_score": 92.0,
+    "switching_cost_score": 90.0,
+    "network_effects_score": 70.0,
+    "technical_complexity_score": 90.0
+  },
+  "gtm": {
+    "sales_cycle_days": 45,
+    "onboarding_effort_days": 4,
+    "market_awareness_score": 75.0,
+    "regulatory_friction_score": 20.0
+  },
+  "created_at": "2026-08-29T00:00:00Z",
+  "metadata": {
+    "origin_issue": "Paperclip Core",
+    "primary_technology": "TypeScript, Node.js, Fastify, PostgreSQL, Docker"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "id": "agos-logic-solver",
+  "name": "AGOS Architectural Constraint Solver Engine",
+  "category": "Deterministic AI & Constraint Logic",
+  "repository_url": "https://github.com/aavendano/agos-services.git",
+  "description": "Deterministic logic and CSP constraint solver engine for complex architectural configuration, Serie 100/200 glass/aluminum engineering, and automated mathematical Bill of Materials (BOM) generation.",
+  "key_differentiators": [
+    "100% deterministic constraint validation eliminating LLM hallucinations in structural calculations",
+    "Bi-directional constraint propagation and automated structural repair recommendations",
+    "Direct parametric Bill of Materials (BOM) export for ERP and manufacturing systems",
+    "Pluggable protocol interface separating business rules from constraint solver engines"
+  ],
+  "readiness": {
+    "trl": 7,
+    "crl": 6,
+    "operational_evidence": "Validated with Serie 100/200 architectural rules across 63 Excel spec sheets; A-D prototype benchmarked with 100% pass rate in AADA-27/28.",
+    "tech_debt_score": 15.0
+  },
+  "market": {
+    "tam_usd_m": 1250.0,
+    "sam_usd_m": 180.0,
+    "som_usd_m": 24.0,
+    "cagr_pct": 14.5,
+    "target_segments": [
+      "Architectural Aluminum Fabricators",
+      "Curtain Wall Manufacturers",
+      "Building Construction ERPs"
+    ],
+    "competitive_density": "low"
+  },
+  "unit_economics": {
+    "pricing_type": "b2b_saas",
+    "avg_acv_usd": 28000.0,
+    "gross_margin_pct": 88.0,
+    "cac_usd": 7500.0,
+    "monthly_churn_pct": 0.8,
+    "target_year1_customers": 12,
+    "customer_growth_rate_yoy_pct": 120.0
+  },
+  "moat": {
+    "proprietary_ip_score": 90.0,
+    "switching_cost_score": 85.0,
+    "network_effects_score": 45.0,
+    "technical_complexity_score": 88.0
+  },
+  "gtm": {
+    "sales_cycle_days": 40,
+    "onboarding_effort_days": 5,
+    "market_awareness_score": 65.0,
+    "regulatory_friction_score": 15.0
+  },
+  "created_at": "2026-08-29T00:00:00Z",
+  "metadata": {
+    "origin_issue": "AADA-24/27/28",
+    "primary_technology": "Python, CSP Solver, Rule Engine"
+  }
+}

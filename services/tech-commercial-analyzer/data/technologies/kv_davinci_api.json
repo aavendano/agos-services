@@ -1,0 +1,56 @@
+{
+  "id": "kv-davinci-api",
+  "name": "KV / DaVinci High-Performance State Synchronization Engine",
+  "category": "Distributed Systems & Cloud Infrastructure",
+  "repository_url": "https://github.com/aavendano/agos-services.git",
+  "description": "High-throughput, sub-millisecond key-value storage and state synchronization engine engineered for distributed agent memory, low-latency caching, and event stream persistence.",
+  "key_differentiators": [
+    "Sub-millisecond read/write latency with optimized memory tiering",
+    "High concurrency with zero-lock snapshot isolation",
+    "Built-in TTL eviction, pub/sub channels, and atomic batch mutations"
+  ],
+  "readiness": {
+    "trl": 6,
+    "crl": 5,
+    "operational_evidence": "Benchmarked in dev test harness; pending branch merge from davinci-api for production hardening.",
+    "tech_debt_score": 28.0
+  },
+  "market": {
+    "tam_usd_m": 3100.0,
+    "sam_usd_m": 220.0,
+    "som_usd_m": 15.0,
+    "cagr_pct": 18.0,
+    "target_segments": [
+      "Real-time Gaming Servers",
+      "Financial Trading Engines",
+      "High-Scale Agent Memory Layers"
+    ],
+    "competitive_density": "high"
+  },
+  "unit_economics": {
+    "pricing_type": "usage_based_api",
+    "avg_acv_usd": 12000.0,
+    "gross_margin_pct": 74.0,
+    "cac_usd": 4500.0,
+    "monthly_churn_pct": 2.2,
+    "target_year1_customers": 15,
+    "customer_growth_rate_yoy_pct": 80.0
+  },
+  "moat": {
+    "proprietary_ip_score": 68.0,
+    "switching_cost_score": 65.0,
+    "network_effects_score": 35.0,
+    "technical_complexity_score": 78.0
+  },
+  "gtm": {
+    "sales_cycle_days": 35,
+    "onboarding_effort_days": 3,
+    "market_awareness_score": 70.0,
+    "regulatory_friction_score": 10.0
+  },
+  "created_at": "2026-08-29T00:00:00Z",
+  "metadata": {
+    "origin_issue": "Project KV",
+    "primary_technology": "Go/Rust, Redis Protocol, Memory Engine"
+  }
+}

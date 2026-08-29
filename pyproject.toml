@@ -28,5 +28,7 @@ dependencies = [
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
+testpaths = ["tests"]
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
 addopts = "-ra -q --asyncio-mode=auto"
+asyncio_default_fixture_loop_scope = "function"
