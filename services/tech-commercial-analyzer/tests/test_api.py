@@ -14,6 +14,13 @@ def test_api_health():
     assert res.json()["status"] == "ok"
 
 
+def test_healthz():
+    res = client.get("/healthz")
+    assert res.status_code == 200
+    assert res.json()["status"] == "ok"
+
+
+
 def test_api_list_technologies():
     res = client.get("/api/technologies")
     assert res.status_code == 200

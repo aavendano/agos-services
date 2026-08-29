@@ -139,8 +139,10 @@ See [services/tech-commercial-analyzer/README.md](services/tech-commercial-analy
 ## Documentation
 
 - [Architecture & Isolation Policy](docs/ARCHITECTURE.md)
+- [Multi-Service Runtime Specification](docs/RUNTIME.md)
 - [Client Setup Guide (Cursor / Claude)](docs/MCP_GUIDE.md)
 - [Deployment Guide (Railway / Render / VPS)](docs/DEPLOYMENT.md)
+- [Deployment Profiles, Cost Matrix & Runbooks](docs/DEPLOYMENT_PROFILES.md)
 
 ---
 

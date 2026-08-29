@@ -26,6 +26,13 @@ dependencies = [
     "gunicorn>=22.0.0",
 ]
 
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["apps*", "config*"]
+exclude = ["services*", "tests*"]
+
+
+
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
 testpaths = ["tests"]

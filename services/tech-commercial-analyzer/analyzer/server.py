@@ -40,9 +40,11 @@ async def dashboard_view(request: Request):
     )
 
 
+@app.get("/healthz")
 @app.get("/api/health")
 async def health_check():
     return {"status": "ok", "service": "tech-commercial-analyzer", "version": "1.0.0"}
+
 
 
 @app.get("/api/technologies", response_model=List[TechAsset])
